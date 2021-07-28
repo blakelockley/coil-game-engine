@@ -1,8 +1,8 @@
 # Usage:
 # make        		# compile sample
 
-CC = cc
-CFLAGS = -Wall
+CC = gcc
+CFLAGS = -Wall -g
 CLIBS = -lglfw3 -framework OpenGL -framework Cocoa -framework IOKit
 
 ROOT_DIR = ../..

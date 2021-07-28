@@ -3,8 +3,8 @@
 # make clean  		# remove build object files
 # make clean_all	# remove all build files and library
 
-CC = cc
-CFLAGS = -Wall -Iincludes
+CC = gcc
+CFLAGS = -Wall -Iincludes -g
 
 TARGET_LIB = build/libengine.a
 
@@ -15,7 +15,7 @@ OBJS = ${SRCS:src/%.c=build/%.o}
 engine: build header ${TARGET_LIB}
 
 ${TARGET_LIB}: ${OBJS}
-	ar -cr ${TARGET_LIB} ${OBJS}
+	ar -crs ${TARGET_LIB} ${OBJS}
  
 header: src/engine.h build
 	cp src/engine.h build/engine.h

@@ -1,2 +1,3 @@
 build/
 samples/**/*.out
+samples/**/*.out.dSYM

@@ -1,15 +1,43 @@
 #include "engine.h"
 
 // clang-format off
-vec3 vertices[8] = {
-    {-0.5, -0.5, +0.5}, // 0 left  bottom front
-    {-0.5, +0.5, +0.5}, // 1 left  top    front
-    {+0.5, -0.5, +0.5}, // 2 right bottom front
-    {+0.5, +0.5, +0.5}, // 3 right top    front
-    {-0.5, -0.5, -0.5}, // 4 left  bottom back
-    {-0.5, +0.5, -0.5}, // 5 left  top    back
-    {+0.5, -0.5, -0.5}, // 6 right bottom back
-    {+0.5, +0.5, -0.5}, // 7 right top    back
+Vertex vertices[24] = {
+    
+    // front 
+    {{-0.5, -0.5, +0.5}, {0.0, 0.0, +1.0}},  //  0 left  bottom front
+    {{-0.5, +0.5, +0.5}, {0.0, 0.0, +1.0}},  //  1 left  top    front
+    {{+0.5, -0.5, +0.5}, {0.0, 0.0, +1.0}},  //  2 right bottom front
+    {{+0.5, +0.5, +0.5}, {0.0, 0.0, +1.0}},  //  3 right top    front
+ 
+    // left  
+    {{-0.5, -0.5, +0.5}, {-1.0, 0.0, 0.0}},  //  4 left  bottom front
+    {{-0.5, +0.5, +0.5}, {-1.0, 0.0, 0.0}},  //  5 left  top    front
+    {{-0.5, -0.5, -0.5}, {-1.0, 0.0, 0.0}},  //  6 left  bottom back
+    {{-0.5, +0.5, -0.5}, {-1.0, 0.0, 0.0}},  //  7 left  top    back
+ 
+    // right 
+    {{+0.5, -0.5, +0.5}, {+1.0, 0.0, 0.0}},  //  8 right bottom front
+    {{+0.5, +0.5, +0.5}, {+1.0, 0.0, 0.0}},  //  9 right top    front
+    {{+0.5, -0.5, -0.5}, {+1.0, 0.0, 0.0}},  // 10 right bottom back
+    {{+0.5, +0.5, -0.5}, {+1.0, 0.0, 0.0}},  // 11 right top    back
+
+    // back
+    {{-0.5, -0.5, -0.5}, {0.0, 0.0, -1.0}},  // 12 left  bottom back
+    {{-0.5, +0.5, -0.5}, {0.0, 0.0, -1.0}},  // 13 left  top    back
+    {{+0.5, -0.5, -0.5}, {0.0, 0.0, -1.0}},  // 14 right bottom back
+    {{+0.5, +0.5, -0.5}, {0.0, 0.0, -1.0}},  // 15 right top    back
+
+    // top
+    {{-0.5, +0.5, +0.5}, {0.0, 1.0, 0.0}},  // 16 left  top    front
+    {{-0.5, +0.5, -0.5}, {0.0, 1.0, 0.0}},  // 17 left  top    back
+    {{+0.5, +0.5, +0.5}, {0.0, 1.0, 0.0}},  // 18 right top    front
+    {{+0.5, +0.5, -0.5}, {0.0, 1.0, 0.0}},  // 19 right top    back
+
+    // bottom
+    {{-0.5, -0.5, +0.5}, {0.0, -1.0, 0.0}},  // 20 left  bottom front
+    {{-0.5, -0.5, -0.5}, {0.0, -1.0, 0.0}},  // 21 left  bottom back
+    {{+0.5, -0.5, +0.5}, {0.0, -1.0, 0.0}},  // 22 right bottom front
+    {{+0.5, -0.5, -0.5}, {0.0, -1.0, 0.0}},  // 23 right bottom back
 };
 
 static unsigned int indicies[36] = {
@@ -18,24 +46,24 @@ static unsigned int indicies[36] = {
     3, 2, 1,
     
     // left
-    0, 1, 4,
-    5, 4, 1,
-    
-    // right
-    2, 3, 6,
-    7, 6, 3,
-    
-    // back
     4, 5, 6,
     7, 6, 5,
     
+    // right
+    8, 9, 10,
+    11, 10, 9,
+    
+    // back
+    12, 13, 14,
+    15, 14, 13,
+    
     // top
-    1, 5, 3,
-    7, 3, 5,
+    16, 17, 18,
+    19, 18, 17,
     
     // bottom
-    0, 4, 2,
-    6, 2, 4,
+    20, 21, 22,
+    23, 22, 21,
 };
 // clang-format on
 
@@ -62,7 +90,7 @@ int main(int argc, char **argv) {
     set_transform_function(cube, transform);
     add_entity(scene, cube);
 
-    Model *model = create_model(vertices, 8, indicies, 36);
+    Model *model = create_model(vertices, 24, indicies, 36);
     set_model(cube, model);
 
     loop_window(window);

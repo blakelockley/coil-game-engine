@@ -12,6 +12,11 @@
 
 #include <GLFW/glfw3.h>
 
+typedef struct _Vertex {
+    vec3 position;
+    vec3 normal;
+} Vertex;
+
 typedef struct _Window Window;
 typedef struct _Scene Scene;
 typedef struct _Camera Camera;
@@ -35,7 +40,7 @@ void set_update_function(Entity *entity, void (*update)(float));
 void set_transform_function(Entity *entity, void (*tranform)(mat4x4));
 void set_model(Entity *scene, Model *model);
 
-Model *create_model(vec3 vertices[], size_t vertices_n, unsigned int indicies[], size_t indicies_n);
+Model *create_model(Vertex vertices[], size_t vertices_n, unsigned int indicies[], size_t indicies_n);
 void destroy_model(Model *model);
 
 #endif  // ENGINE_H

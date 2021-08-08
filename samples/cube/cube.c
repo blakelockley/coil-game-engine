@@ -68,14 +68,10 @@ static unsigned int indicies[36] = {
 // clang-format on
 
 float rot_y = 0.0f;
-void update(float delta) {
-    rot_y += -delta * 2;
-}
+void update(Entity *cube, float delta) {
+    rot_y += -delta;
 
-void transform(mat4x4 mat) {
-    mat4x4_identity(mat);
-    mat4x4_translate(mat, 0.0f, 0.0f, -2.0f);
-    mat4x4_rotate_Y(mat, mat, rot_y);
+    set_rotation(cube, 0, 1, 0, rot_y);
 }
 
 int main(int argc, char **argv) {
@@ -86,8 +82,8 @@ int main(int argc, char **argv) {
     add_scene(window, scene);
 
     Entity *cube = create_entity();
+    set_position(cube, 0.0f, 0.0f, -2.0f);
     set_update_function(cube, update);
-    set_transform_function(cube, transform);
     add_entity(scene, cube);
 
     Model *model = create_model(vertices, 24, indicies, 36);

@@ -36,8 +36,12 @@ void add_entity(Scene *scene, Entity *entity);
 
 Entity *create_entity();
 void destroy_entity(Entity *entity);
-void set_update_function(Entity *entity, void (*update)(float));
-void set_transform_function(Entity *entity, void (*tranform)(mat4x4));
+void set_update_function(Entity *entity, void (*update)(Entity *, float));
+
+void set_position(Entity *entity, float x, float y, float z);
+void set_rotation(Entity *entity, float x, float y, float z, float angle);
+void set_scale(Entity *entity, float scale);
+
 void set_model(Entity *scene, Model *model);
 
 Model *create_model(Vertex vertices[], size_t vertices_n, unsigned int indicies[], size_t indicies_n);

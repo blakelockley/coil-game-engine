@@ -67,11 +67,16 @@ static unsigned int indicies[36] = {
 };
 // clang-format on
 
+Light *light;
+Entity *lamp;
+
 float rot_y = 0.0f;
 void update(Entity *cube, float delta) {
-    rot_y += -delta;
+    rot_y += delta;
+    set_rotation(cube, 0, 1, 0, -rot_y * 0.1f);
 
-    set_rotation(cube, 0, 1, 0, rot_y);
+    set_position(lamp, sin(rot_y), 0.0f, -3 + cos(rot_y));
+    set_light_position(light, sin(rot_y), 0.0f, -3 + cos(rot_y));
 }
 
 int main(int argc, char **argv) {
@@ -82,12 +87,24 @@ int main(int argc, char **argv) {
     add_scene(window, scene);
 
     Entity *cube = create_entity();
-    set_position(cube, 0.0f, 0.0f, -2.0f);
+    set_position(cube, 0.0f, 0.0f, -3.0f);
+
     set_update_function(cube, update);
     add_entity(scene, cube);
 
     Model *model = create_model(vertices, 24, indicies, 36);
     set_model(cube, model);
+
+    light = create_light();
+    set_ambient_color(light, 0.1f, 0.1f, 0.1f);
+    set_diffuse_color(light, 0.2f, 0.2f, 0.2f);
+    set_specular_color(light, 0.8f, 0.8f, 0.8f);
+    add_light(scene, light);
+
+    lamp = create_entity();
+    set_scale(lamp, 0.1f);
+    set_model(lamp, model);
+    add_entity(scene, lamp);
 
     loop_window(window);
 

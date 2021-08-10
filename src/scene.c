@@ -1,31 +1,18 @@
 #include "internal.h"
 
-struct Rect {
-    float x, y, w, h;
-};
-
-struct Color {
-    float r, g, b, a;
-};
-
-struct _Scene {
-    struct Rect viewport;
-    struct Color clear_color;
-
-    Entity **entities;
-    size_t n_entities;
-
-    mat4x4 projection;
-};
-
 Scene *create_scene() {
     Scene *scene = (Scene *)malloc(sizeof(Scene));
 
     scene->entities = NULL;
     scene->n_entities = 0;
 
-    scene->viewport = (struct Rect){0, 0, 1, 1};
-    scene->clear_color = (struct Color){0, 0, 0, 1};
+    scene->lights = NULL;
+    scene->n_lights = 0;
+
+    scene->clear_color[0] = 0.0f;
+    scene->clear_color[1] = 0.0f;
+    scene->clear_color[2] = 0.0f;
+    scene->clear_color[3] = 1.0f;
 
     return scene;
 }
@@ -38,12 +25,11 @@ void destroy_scene(Scene *scene) {
     free(scene);
 }
 
-void set_viewport(Scene *scene, float x, float y, float width, float height) {
-    scene->viewport = (struct Rect){x, y, width, height};
-}
-
 void set_clear_color(Scene *scene, float r, float g, float b, float a) {
-    scene->clear_color = (struct Color){r, g, b, a};
+    scene->clear_color[0] = r;
+    scene->clear_color[1] = g;
+    scene->clear_color[2] = b;
+    scene->clear_color[3] = a;
 }
 
 void add_entity(Scene *scene, Entity *entity) {
@@ -59,18 +45,14 @@ void update_scene(Scene *scene, float delta) {
 }
 
 void render_scene(Scene *scene, int width, int height) {
-    struct Rect *rect = &scene->viewport;
-    glViewport(rect->x * width, rect->y * height, rect->w * width, rect->h * height);
+    glViewport(0, 0, width, height);
 
-    mat4x4 projection;
-    mat4x4_identity(projection);
-    mat4x4_perspective(projection, 45.0f, (float)(rect->w * width) / (rect->h * height), 0.1f, 100.0f);
-
-    struct Color *color = &scene->clear_color;
-    glClearColor(color->r, color->g, color->b, color->a);
-
+    glClearColor(scene->clear_color[0], scene->clear_color[1], scene->clear_color[2], scene->clear_color[3]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    mat4x4_identity(scene->projection);
+    mat4x4_perspective(scene->projection, 45.0f, (float)(width) / (height), 0.1f, 100.0f);
+
     for (int i = 0; i < scene->n_entities; i++)
-        render_entity(scene->entities[i], projection);
+        render_entity(scene->entities[i], scene);
 }

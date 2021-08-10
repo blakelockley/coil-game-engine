@@ -39,6 +39,13 @@ void add_entity(Scene *scene, Entity *entity) {
     scene->n_entities++;
 }
 
+void add_light(Scene *scene, Light *light) {
+    // TODO: More efficent realloc
+    scene->lights = (Light **)realloc(scene->lights, sizeof(Light *) * (scene->n_lights + 1));
+    scene->lights[scene->n_lights] = light;
+    scene->n_lights++;
+}
+
 void update_scene(Scene *scene, float delta) {
     for (int i = 0; i < scene->n_entities; i++)
         update_entity(scene->entities[i], delta);

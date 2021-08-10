@@ -21,6 +21,7 @@ typedef struct _Window Window;
 typedef struct _Scene Scene;
 typedef struct _Camera Camera;
 typedef struct _Entity Entity;
+typedef struct _Light Light;
 typedef struct _Model Model;
 
 Window *create_window(int width, int height, const char *title);
@@ -33,6 +34,7 @@ void destroy_scene(Scene *scene);
 void set_viewport(Scene *scene, float x, float y, float width, float height);
 void set_clear_color(Scene *scene, float r, float g, float b, float a);
 void add_entity(Scene *scene, Entity *entity);
+void add_light(Scene *scene, Light *light);
 
 Entity *create_entity();
 void destroy_entity(Entity *entity);
@@ -46,5 +48,14 @@ void set_model(Entity *scene, Model *model);
 
 Model *create_model(Vertex vertices[], size_t vertices_n, unsigned int indicies[], size_t indicies_n);
 void destroy_model(Model *model);
+
+Light *create_light();
+void destroy_light(Light *light);
+
+void set_light_position(Light *light, float x, float y, float z);
+
+void set_ambient_color(Light *light, float r, float g, float b);
+void set_diffuse_color(Light *light, float r, float g, float b);
+void set_specular_color(Light *light, float r, float g, float b);
 
 #endif  // ENGINE_H

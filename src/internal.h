@@ -7,6 +7,9 @@ struct _Scene {
     Entity **entities;
     size_t n_entities;
 
+    Light **lights;
+    size_t n_lights;
+
     vec4 clear_color;
     mat4x4 projection;
 };

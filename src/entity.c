@@ -44,11 +44,17 @@ void update_entity(Entity *entity, float delta) {
         entity->update_function(entity, delta);
 }
 
-void render_entity(Entity *entity, mat4x4 projection) {
+void render_entity(Entity *entity, Scene *scene) {
     glUseProgram(entity->shader);
 
     GLint transformation_matrix_loc = glGetUniformLocation(entity->shader, "transformationMatrix");
+    GLint normal_matrix_loc = glGetUniformLocation(entity->shader, "normalMatrix");
     GLint projection_matrix_loc = glGetUniformLocation(entity->shader, "projectionMatrix");
+
+    GLint light_pos_loc = glGetUniformLocation(entity->shader, "lightPos");
+    GLint ambient_color_loc = glGetUniformLocation(entity->shader, "ambientColor");
+    GLint diffuse_color_loc = glGetUniformLocation(entity->shader, "diffuseColor");
+    GLint specular_color_loc = glGetUniformLocation(entity->shader, "specularColor");
 
     mat4x4 translation, rotation, scale;
 
@@ -63,8 +69,20 @@ void render_entity(Entity *entity, mat4x4 projection) {
     mat4x4_mul(entity->transform, entity->transform, rotation);
     mat4x4_mul(entity->transform, entity->transform, scale);
 
+    mat4x4 normal_matrix, temp_matrix;
+    mat4x4_transpose(temp_matrix, entity->transform);
+    mat4x4_invert(normal_matrix, temp_matrix);
+
     glUniformMatrix4fv(transformation_matrix_loc, 1, GL_FALSE, (float *)entity->transform);
-    glUniformMatrix4fv(projection_matrix_loc, 1, GL_FALSE, (float *)projection);
+    glUniformMatrix4fv(normal_matrix_loc, 1, GL_FALSE, (float *)normal_matrix);
+    glUniformMatrix4fv(projection_matrix_loc, 1, GL_FALSE, (float *)scene->projection);
+
+    Light *light = scene->lights[0];
+
+    glUniform3fv(light_pos_loc, 1, (float *)light->position);
+    glUniform3fv(ambient_color_loc, 1, (float *)light->ambient_color);
+    glUniform3fv(diffuse_color_loc, 1, (float *)light->diffuse_color);
+    glUniform3fv(specular_color_loc, 1, (float *)light->specular_color);
 
     render_model(entity->model, entity->shader);
 }

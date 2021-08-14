@@ -3,12 +3,15 @@
 in vec3 fragPos;
 in vec3 fragNormal;
 
-out vec4 color;
+uniform vec3 color;
+uniform vec3 emissive;
 
 uniform vec3 lightPos;
 uniform vec3 ambientColor;
 uniform vec3 diffuseColor;
 uniform vec3 specularColor;
+
+out vec4 FragColor;
 
 void main()
 {
@@ -27,8 +30,7 @@ void main()
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
     vec3 specular = spec * specularColor;
 
-    vec3 baseColour = vec3(0.20f, 0.91f, 0.61f);
-    vec3 result = (ambient + diffuse + specular) * baseColour;
+    vec3 result = ((ambient + diffuse + specular) * color) + emissive;
 
-    color = vec4(result, 1.0);
+    FragColor = vec4(result, 1.0);
 }

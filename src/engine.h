@@ -40,6 +40,9 @@ Entity *create_entity();
 void destroy_entity(Entity *entity);
 void set_update_function(Entity *entity, void (*update)(Entity *, float));
 
+void set_emissive(Entity *entity, float r, float g, float b);
+void set_color(Entity *entity, float r, float g, float b);
+
 void set_position(Entity *entity, float x, float y, float z);
 void set_rotation(Entity *entity, float x, float y, float z, float angle);
 void set_scale(Entity *entity, float scale);

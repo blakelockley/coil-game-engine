@@ -3,6 +3,10 @@
 
 struct _Entity {
     Model *model;
+
+    vec3 color;
+    vec3 emissive;
+
     GLuint shader;
 
     void (*update_function)(Entity *, float);
@@ -18,14 +22,23 @@ Entity *create_entity() {
     Entity *entity = malloc(sizeof(Entity));
 
     entity->model = NULL;
+
+    entity->color[0] = 1.0f;
+    entity->color[1] = 1.0f;
+    entity->color[2] = 1.0f;
+
+    entity->emissive[0] = 0.0f;
+    entity->emissive[1] = 0.0f;
+    entity->emissive[2] = 0.0f;
+
     entity->shader = load_shader("../../assets/static.vs", "../../assets/static.fs");
 
     entity->update_function = NULL;
 
     mat4x4_identity(entity->transform);
-    entity->position[0] = 0;
-    entity->position[1] = 0;
-    entity->position[2] = 0;
+    entity->position[0] = 0.0f;
+    entity->position[1] = 0.0f;
+    entity->position[2] = 0.0f;
 
     quat_identity(entity->rotation);
 
@@ -46,14 +59,15 @@ void update_entity(Entity *entity, float delta) {
 void render_entity(Entity *entity, Scene *scene) {
     glUseProgram(entity->shader);
 
+    GLint color_loc = glGetUniformLocation(entity->shader, "color");
+    GLint emissive_loc = glGetUniformLocation(entity->shader, "emissive");
+
+    glUniform3fv(color_loc, 1, (float *)entity->color);
+    glUniform3fv(emissive_loc, 1, (float *)entity->emissive);
+
     GLint transformation_matrix_loc = glGetUniformLocation(entity->shader, "transformationMatrix");
     GLint normal_matrix_loc = glGetUniformLocation(entity->shader, "normalMatrix");
     GLint projection_matrix_loc = glGetUniformLocation(entity->shader, "projectionMatrix");
-
-    GLint light_pos_loc = glGetUniformLocation(entity->shader, "lightPos");
-    GLint ambient_color_loc = glGetUniformLocation(entity->shader, "ambientColor");
-    GLint diffuse_color_loc = glGetUniformLocation(entity->shader, "diffuseColor");
-    GLint specular_color_loc = glGetUniformLocation(entity->shader, "specularColor");
 
     mat4x4 translation, rotation, scale;
 
@@ -76,6 +90,11 @@ void render_entity(Entity *entity, Scene *scene) {
     glUniformMatrix4fv(normal_matrix_loc, 1, GL_FALSE, (float *)normal_matrix);
     glUniformMatrix4fv(projection_matrix_loc, 1, GL_FALSE, (float *)scene->projection);
 
+    GLint light_pos_loc = glGetUniformLocation(entity->shader, "lightPos");
+    GLint ambient_color_loc = glGetUniformLocation(entity->shader, "ambientColor");
+    GLint diffuse_color_loc = glGetUniformLocation(entity->shader, "diffuseColor");
+    GLint specular_color_loc = glGetUniformLocation(entity->shader, "specularColor");
+
     Light *light = scene->lights[0];
 
     glUniform3fv(light_pos_loc, 1, (float *)light->position);
@@ -88,6 +107,18 @@ void render_entity(Entity *entity, Scene *scene) {
 
 void set_model(Entity *entity, Model *model) {
     entity->model = model;
+}
+
+void set_color(Entity *entity, float r, float g, float b) {
+    entity->color[0] = r;
+    entity->color[1] = g;
+    entity->color[2] = b;
+}
+
+void set_emissive(Entity *entity, float r, float g, float b) {
+    entity->emissive[0] = r;
+    entity->emissive[1] = g;
+    entity->emissive[2] = b;
 }
 
 void set_update_function(Entity *entity, void (*update)(Entity *, float)) {

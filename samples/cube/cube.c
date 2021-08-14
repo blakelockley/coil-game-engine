@@ -87,6 +87,7 @@ int main(int argc, char **argv) {
     add_scene(window, scene);
 
     Entity *cube = create_entity();
+    set_color(cube, 0.1f, 0.6f, 0.8f);
     set_position(cube, 0.0f, 0.0f, -3.0f);
 
     set_update_function(cube, update);
@@ -102,6 +103,7 @@ int main(int argc, char **argv) {
     add_light(scene, light);
 
     lamp = create_entity();
+    set_emissive(lamp, 1.0f, 1.0f, 1.0f);
     set_scale(lamp, 0.1f);
     set_model(lamp, model);
     add_entity(scene, lamp);

@@ -108,5 +108,12 @@ int main(int argc, char **argv) {
 
     loop_window(window);
 
+    destroy_entity(lamp);
+    destroy_light(light);
+
+    destroy_model(model);
+    destroy_entity(cube);
+
+    destroy_scene(scene);
     destroy_window(window);
 }

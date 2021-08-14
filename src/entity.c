@@ -35,7 +35,6 @@ Entity *create_entity() {
 }
 
 void destroy_entity(Entity *entity) {
-    destroy_model(entity->model);
     free(entity);
 }
 

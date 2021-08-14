@@ -18,10 +18,8 @@ Scene *create_scene() {
 }
 
 void destroy_scene(Scene *scene) {
-    for (int i = 0; i < scene->n_entities; i++)
-        destroy_entity(scene->entities[i]);
-
     free(scene->entities);
+    free(scene->lights);
     free(scene);
 }
 

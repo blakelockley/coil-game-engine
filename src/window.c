@@ -53,9 +53,6 @@ void destroy_window(Window *window) {
     glfwDestroyWindow(window->handle);
     glfwTerminate();
 
-    for (int i = 0; i < window->n_scenes; i++)
-        destroy_scene(window->scenes[i]);
-
     free(window->scenes);
     free(window);
 }

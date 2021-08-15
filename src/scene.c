@@ -3,6 +3,8 @@
 Scene *create_scene() {
     Scene *scene = (Scene *)malloc(sizeof(Scene));
 
+    scene->loop_function = NULL;
+
     scene->entities = NULL;
     scene->n_entities = 0;
 
@@ -21,6 +23,10 @@ void destroy_scene(Scene *scene) {
     free(scene->entities);
     free(scene->lights);
     free(scene);
+}
+
+void set_loop_function(Scene *scene, void (*fn)(Scene *, float)) {
+    scene->loop_function = fn;
 }
 
 void set_clear_color(Scene *scene, float r, float g, float b, float a) {
@@ -45,8 +51,8 @@ void add_light(Scene *scene, Light *light) {
 }
 
 void update_scene(Scene *scene, float delta) {
-    for (int i = 0; i < scene->n_entities; i++)
-        update_entity(scene->entities[i], delta);
+    if (scene->loop_function != NULL)
+        scene->loop_function(scene, delta);
 }
 
 void render_scene(Scene *scene, int width, int height) {

@@ -12,6 +12,8 @@ struct _Scene {
 
     vec4 clear_color;
     mat4x4 projection;
+
+    void (*loop_function)(Scene *, float);
 };
 
 struct _Light {
@@ -27,7 +29,6 @@ void update_scene(Scene *scene, float delta);
 void render_scene(Scene *scene, int width, int height);
 
 // Entities
-void update_entity(Entity *entity, float delta);
 void render_entity(Entity *entity, Scene *scene);
 
 // Models

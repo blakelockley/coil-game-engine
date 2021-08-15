@@ -31,6 +31,7 @@ void add_scene(Window *window, Scene *scene);
 
 Scene *create_scene();
 void destroy_scene(Scene *scene);
+void set_loop_function(Scene *scene, void (*fn)(Scene *, float));
 void set_viewport(Scene *scene, float x, float y, float width, float height);
 void set_clear_color(Scene *scene, float r, float g, float b, float a);
 void add_entity(Scene *scene, Entity *entity);
@@ -38,7 +39,6 @@ void add_light(Scene *scene, Light *light);
 
 Entity *create_entity();
 void destroy_entity(Entity *entity);
-void set_update_function(Entity *entity, void (*update)(Entity *, float));
 
 void set_emissive(Entity *entity, float r, float g, float b);
 void set_color(Entity *entity, float r, float g, float b);

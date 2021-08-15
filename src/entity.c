@@ -9,10 +9,7 @@ struct _Entity {
 
     GLuint shader;
 
-    void (*update_function)(Entity *, float);
-
     mat4x4 transform;
-
     vec3 position;
     quat rotation;
     float scale;
@@ -33,8 +30,6 @@ Entity *create_entity() {
 
     entity->shader = load_shader("../../assets/static.vs", "../../assets/static.fs");
 
-    entity->update_function = NULL;
-
     mat4x4_identity(entity->transform);
     entity->position[0] = 0.0f;
     entity->position[1] = 0.0f;
@@ -49,11 +44,6 @@ Entity *create_entity() {
 
 void destroy_entity(Entity *entity) {
     free(entity);
-}
-
-void update_entity(Entity *entity, float delta) {
-    if (entity->update_function)
-        entity->update_function(entity, delta);
 }
 
 void render_entity(Entity *entity, Scene *scene) {
@@ -119,10 +109,6 @@ void set_emissive(Entity *entity, float r, float g, float b) {
     entity->emissive[0] = r;
     entity->emissive[1] = g;
     entity->emissive[2] = b;
-}
-
-void set_update_function(Entity *entity, void (*update)(Entity *, float)) {
-    entity->update_function = update;
 }
 
 void set_position(Entity *entity, float x, float y, float z) {

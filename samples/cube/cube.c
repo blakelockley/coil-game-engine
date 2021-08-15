@@ -40,7 +40,7 @@ Vertex vertices[24] = {
     {{+0.5, -0.5, -0.5}, {0.0, -1.0, 0.0}},  // 23 right bottom back
 };
 
-static unsigned int indicies[36] = {
+unsigned int indicies[36] = {
     //front
     0, 1, 2,
     3, 2, 1,
@@ -67,13 +67,23 @@ static unsigned int indicies[36] = {
 };
 // clang-format on
 
-Light *light;
-Entity *lamp;
+#define SEED 42
+#define N_CUBES 1
 
-float rot_y = 0.0f;
-void update(Entity *cube, float delta) {
+vec3 cube_positions[N_CUBES] = {
+    {0.0f, 0.0f, -3.0f},
+};
+
+Entity *cubes[N_CUBES], *lamp;
+Model *cube_model;
+Light *light;
+
+void game_loop(Scene *scene, float delta) {
+    static float rot_y = 0.0f;
     rot_y += delta;
-    set_rotation(cube, 0, 1, 0, -rot_y * 0.1f);
+
+    for (int i = 0; i < N_CUBES; i++)
+        set_rotation(cubes[i], 0, 1, 0, -rot_y * 0.1f * i);
 
     set_position(lamp, sin(rot_y), 0.0f, -3 + cos(rot_y));
     set_light_position(light, sin(rot_y), 0.0f, -3 + cos(rot_y));
@@ -83,38 +93,48 @@ int main(int argc, char **argv) {
     Window *window = create_window(640, 480, "Cube");
 
     Scene *scene = create_scene();
+    set_loop_function(scene, game_loop);
     set_clear_color(scene, 0.0, 0.0, 0.0, 1.0);
     add_scene(window, scene);
 
-    Entity *cube = create_entity();
-    set_color(cube, 0.1f, 0.6f, 0.8f);
-    set_position(cube, 0.0f, 0.0f, -3.0f);
+    srand(SEED);
 
-    set_update_function(cube, update);
-    add_entity(scene, cube);
+    cube_model = create_model(vertices, 24, indicies, 36);
 
-    Model *model = create_model(vertices, 24, indicies, 36);
-    set_model(cube, model);
+    for (int i = 0; i < N_CUBES; i++) {
+        Entity *cube = create_entity();
+
+        set_model(cube, cube_model);
+        set_color(cube, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
+
+        set_position(cube, cube_positions[i][0], cube_positions[i][1], cube_positions[i][2]);
+        add_entity(scene, cube);
+
+        cubes[i] = cube;
+    }
 
     light = create_light();
-    set_ambient_color(light, 0.1f, 0.1f, 0.1f);
-    set_diffuse_color(light, 0.2f, 0.2f, 0.2f);
-    set_specular_color(light, 0.8f, 0.8f, 0.8f);
+    set_ambient_color(light, 0.4f, 0.4f, 0.4f);
+    set_diffuse_color(light, 0.8f, 0.8f, 0.8f);
+    set_specular_color(light, 1.0f, 1.0f, 1.0f);
     add_light(scene, light);
 
     lamp = create_entity();
+    set_model(lamp, cube_model);
     set_emissive(lamp, 1.0f, 1.0f, 1.0f);
     set_scale(lamp, 0.1f);
-    set_model(lamp, model);
     add_entity(scene, lamp);
 
     loop_window(window);
 
-    destroy_entity(lamp);
     destroy_light(light);
 
-    destroy_model(model);
-    destroy_entity(cube);
+    destroy_model(cube_model);
+
+    destroy_entity(lamp);
+
+    for (int i = 0; i < N_CUBES; i++)
+        destroy_entity(cubes[i]);
 
     destroy_scene(scene);
     destroy_window(window);

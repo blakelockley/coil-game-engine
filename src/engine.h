@@ -56,4 +56,7 @@ void set_ambient_color(Light *light, float r, float g, float b);
 void set_diffuse_color(Light *light, float r, float g, float b);
 void set_specular_color(Light *light, float r, float g, float b);
 
+Model *build_cube(float size);
+Model *build_sphere(float radius, int stacks, int sectors);
+
 #endif  // ENGINE_H

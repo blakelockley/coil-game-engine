@@ -17,11 +17,15 @@ struct _Scene {
 };
 
 struct _Light {
-    vec3 position;
+    vec4 position;
 
     vec3 ambient_color;
     vec3 diffuse_color;
     vec3 specular_color;
+
+    float constant;
+    float linear;
+    float quadratic;
 };
 
 typedef struct _Vertex {

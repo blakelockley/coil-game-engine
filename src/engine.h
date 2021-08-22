@@ -12,6 +12,9 @@
 
 #include <GLFW/glfw3.h>
 
+#define ENGINE_DIRECTIONAL_LIGHT 0.0f
+#define ENGINE_POINT_LIGHT 1.0f
+
 typedef struct _Window Window;
 typedef struct _Scene Scene;
 typedef struct _Camera Camera;
@@ -50,8 +53,10 @@ void destroy_model(Model *model);
 Light *create_light();
 void destroy_light(Light *light);
 
+void set_light_mode(Light *light, float w);
 void set_light_position(Light *light, float x, float y, float z);
 
+void set_attenuation(Light *light, float constant, float linear, float quadratic);
 void set_ambient_color(Light *light, float r, float g, float b);
 void set_diffuse_color(Light *light, float r, float g, float b);
 void set_specular_color(Light *light, float r, float g, float b);

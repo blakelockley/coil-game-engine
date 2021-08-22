@@ -80,17 +80,25 @@ void render_entity(Entity *entity, Scene *scene) {
     glUniformMatrix4fv(normal_matrix_loc, 1, GL_FALSE, (float *)normal_matrix);
     glUniformMatrix4fv(projection_matrix_loc, 1, GL_FALSE, (float *)scene->projection);
 
-    GLint light_pos_loc = glGetUniformLocation(entity->shader, "lightPos");
-    GLint ambient_color_loc = glGetUniformLocation(entity->shader, "ambientColor");
-    GLint diffuse_color_loc = glGetUniformLocation(entity->shader, "diffuseColor");
-    GLint specular_color_loc = glGetUniformLocation(entity->shader, "specularColor");
+    // clang-format off
+    GLint light_position_loc  = glGetUniformLocation(entity->shader, "light.position");
+    GLint light_ambient_loc   = glGetUniformLocation(entity->shader, "light.ambient");
+    GLint light_diffuse_loc   = glGetUniformLocation(entity->shader, "light.diffuse");
+    GLint light_specular_loc  = glGetUniformLocation(entity->shader, "light.specular");
+    GLint light_constant_loc  = glGetUniformLocation(entity->shader, "light.constant");
+    GLint light_linear_loc    = glGetUniformLocation(entity->shader, "light.linear");
+    GLint light_quadratic_loc = glGetUniformLocation(entity->shader, "light.quadratic");
+    // clang-format on
 
     Light *light = scene->lights[0];
 
-    glUniform3fv(light_pos_loc, 1, (float *)light->position);
-    glUniform3fv(ambient_color_loc, 1, (float *)light->ambient_color);
-    glUniform3fv(diffuse_color_loc, 1, (float *)light->diffuse_color);
-    glUniform3fv(specular_color_loc, 1, (float *)light->specular_color);
+    glUniform4fv(light_position_loc, 1, (float *)light->position);
+    glUniform3fv(light_ambient_loc, 1, (float *)light->ambient_color);
+    glUniform3fv(light_diffuse_loc, 1, (float *)light->diffuse_color);
+    glUniform3fv(light_specular_loc, 1, (float *)light->specular_color);
+    glUniform1f(light_constant_loc, light->constant);
+    glUniform1f(light_linear_loc, light->linear);
+    glUniform1f(light_quadratic_loc, light->quadratic);
 
     GLint has_diffuse_texture_loc = glGetUniformLocation(entity->shader, "hasDiffuseTexture");
     glUniform1ui(has_diffuse_texture_loc, entity->model->has_texture);

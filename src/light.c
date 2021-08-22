@@ -5,10 +5,11 @@ Light *create_light() {
 
     // clang-format off
     *light = (Light) {
-        { 0.0f, 0.0f, 0.0f },
+        { 0.0f, 0.0f, 0.0f, 0.0f},
         { 1.0f, 1.0f, 1.0f },
         { 1.0f, 1.0f, 1.0f },
         { 1.0f, 1.0f, 1.0f },
+        1.0f, 0.09f, 0.032f,
     };
     // clang-format on
 
@@ -41,4 +42,14 @@ void set_specular_color(Light *light, float r, float g, float b) {
     light->specular_color[0] = r;
     light->specular_color[1] = g;
     light->specular_color[2] = b;
+}
+
+void set_attenuation(Light *light, float constant, float linear, float quadratic) {
+    light->constant = constant;
+    light->linear = linear;
+    light->quadratic = quadratic;
+}
+
+void set_light_mode(Light *light, float w) {
+    light->position[3] = w;
 }

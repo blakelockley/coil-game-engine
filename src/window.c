@@ -35,9 +35,10 @@ Window *create_window(int width, int height, const char *title) {
     glfwMakeContextCurrent(window->handle);
     glfwSwapInterval(1);
 
+    glEnable(GL_BLEND);
+    glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
 
-    glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     window->scenes = NULL;

@@ -32,7 +32,7 @@ GLuint load_shader(char *vert_filename, char *frag_filename) {
         info_buffer = (char *)malloc(info_log_length + 1);
         glGetShaderInfoLog(vertex_shader, info_log_length, NULL, info_buffer);
 
-        fprintf(stderr, "Vertex %s\n", info_buffer);
+        fprintf(stderr, "[Vertex Shader Error]\n%s\n", info_buffer);
         free(info_buffer);
     }
 
@@ -43,7 +43,7 @@ GLuint load_shader(char *vert_filename, char *frag_filename) {
         info_buffer = (char *)malloc(info_log_length + 1);
         glGetShaderInfoLog(fragment_shader, info_log_length, NULL, info_buffer);
 
-        fprintf(stderr, "Fragment %s\n", info_buffer);
+        fprintf(stderr, "[Fragment Shader Error]\n%s\n", info_buffer);
         free(info_buffer);
     }
 
@@ -62,6 +62,10 @@ GLuint load_shader(char *vert_filename, char *frag_filename) {
     free((void *)fragment_shader_text);
 
     return program;
+}
+
+void destory_shader(GLuint shader) {
+    glDeleteShader(shader);
 }
 
 char *load_file(char *filename) {

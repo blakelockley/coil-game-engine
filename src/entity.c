@@ -15,10 +15,10 @@ struct _Entity {
     float scale;
 };
 
-Entity *create_entity() {
+Entity *create_entity(Model *model) {
     Entity *entity = malloc(sizeof(Entity));
 
-    entity->model = NULL;
+    entity->model = model;
 
     entity->color[0] = 1.0f;
     entity->color[1] = 1.0f;
@@ -91,6 +91,9 @@ void render_entity(Entity *entity, Scene *scene) {
     glUniform3fv(ambient_color_loc, 1, (float *)light->ambient_color);
     glUniform3fv(diffuse_color_loc, 1, (float *)light->diffuse_color);
     glUniform3fv(specular_color_loc, 1, (float *)light->specular_color);
+
+    GLint has_diffuse_texture_loc = glGetUniformLocation(entity->shader, "hasDiffuseTexture");
+    glUniform1ui(has_diffuse_texture_loc, entity->model->has_texture);
 
     render_model(entity->model, entity->shader);
 }

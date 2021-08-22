@@ -24,6 +24,20 @@ struct _Light {
     vec3 specular_color;
 };
 
+typedef struct _Vertex {
+    vec3 position;
+    vec3 normal;
+    vec2 texcoord;
+} Vertex;
+
+struct _Model {
+    GLuint vao, ebo, vbo;
+    GLsizei count;
+
+    GLboolean has_texture;
+    GLuint texture;
+};
+
 // Scenes
 void update_scene(Scene *scene, float delta);
 void render_scene(Scene *scene, int width, int height);
@@ -32,6 +46,7 @@ void render_scene(Scene *scene, int width, int height);
 void render_entity(Entity *entity, Scene *scene);
 
 // Models
+Model *create_model(Vertex vertices[], size_t vertices_n, unsigned int indicies[], size_t indicies_n);
 void render_model(Model *model, GLuint shader);
 
 #endif  // ENGINE_INTERNAL_H

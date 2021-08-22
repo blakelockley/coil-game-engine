@@ -12,11 +12,6 @@
 
 #include <GLFW/glfw3.h>
 
-typedef struct _Vertex {
-    vec3 position;
-    vec3 normal;
-} Vertex;
-
 typedef struct _Window Window;
 typedef struct _Scene Scene;
 typedef struct _Camera Camera;
@@ -37,7 +32,7 @@ void set_clear_color(Scene *scene, float r, float g, float b, float a);
 void add_entity(Scene *scene, Entity *entity);
 void add_light(Scene *scene, Light *light);
 
-Entity *create_entity();
+Entity *create_entity(Model *model);
 void destroy_entity(Entity *entity);
 
 void set_emissive(Entity *entity, float r, float g, float b);
@@ -49,7 +44,7 @@ void set_scale(Entity *entity, float scale);
 
 void set_model(Entity *scene, Model *model);
 
-Model *create_model(Vertex vertices[], size_t vertices_n, unsigned int indicies[], size_t indicies_n);
+void set_texture(Model *model, const char *path);
 void destroy_model(Model *model);
 
 Light *create_light();

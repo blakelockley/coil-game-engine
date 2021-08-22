@@ -58,6 +58,7 @@ void render_entity(Entity *entity, Scene *scene) {
     GLint transformation_matrix_loc = glGetUniformLocation(entity->shader, "transformationMatrix");
     GLint normal_matrix_loc = glGetUniformLocation(entity->shader, "normalMatrix");
     GLint projection_matrix_loc = glGetUniformLocation(entity->shader, "projectionMatrix");
+    GLint view_matrix_loc = glGetUniformLocation(entity->shader, "viewMatrix");
 
     mat4x4 translation, rotation, scale;
 
@@ -79,6 +80,17 @@ void render_entity(Entity *entity, Scene *scene) {
     glUniformMatrix4fv(transformation_matrix_loc, 1, GL_FALSE, (float *)entity->transform);
     glUniformMatrix4fv(normal_matrix_loc, 1, GL_FALSE, (float *)normal_matrix);
     glUniformMatrix4fv(projection_matrix_loc, 1, GL_FALSE, (float *)scene->projection);
+
+    vec3 forward, up = {0, 1, 0};
+    Camera *camera = scene->camera;
+
+    vec3_add(forward, camera->position, camera->direction);
+    mat4x4_look_at(camera->view, camera->position, forward, up);
+
+    glUniformMatrix4fv(view_matrix_loc, 1, GL_FALSE, (float *)camera->view);
+
+    GLint view_position_loc = glGetUniformLocation(entity->shader, "viewPos");
+    glUniform3fv(view_position_loc, 1, (float *)camera->position);
 
     // clang-format off
     GLint light_position_loc  = glGetUniformLocation(entity->shader, "light.position");

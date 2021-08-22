@@ -67,3 +67,7 @@ void render_scene(Scene *scene, int width, int height) {
     for (int i = 0; i < scene->n_entities; i++)
         render_entity(scene->entities[i], scene);
 }
+
+void set_camera(Scene *scene, Camera *camera) {
+    scene->camera = camera;
+}

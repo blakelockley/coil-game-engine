@@ -34,6 +34,7 @@ void set_viewport(Scene *scene, float x, float y, float width, float height);
 void set_clear_color(Scene *scene, float r, float g, float b, float a);
 void add_entity(Scene *scene, Entity *entity);
 void add_light(Scene *scene, Light *light);
+void set_camera(Scene *scene, Camera *camera);
 
 Entity *create_entity(Model *model);
 void destroy_entity(Entity *entity);
@@ -60,6 +61,11 @@ void set_attenuation(Light *light, float constant, float linear, float quadratic
 void set_ambient_color(Light *light, float r, float g, float b);
 void set_diffuse_color(Light *light, float r, float g, float b);
 void set_specular_color(Light *light, float r, float g, float b);
+
+Camera *create_camera(float x, float y, float z);
+void destroy_camera(Camera *camera);
+void set_camera_position(Camera *camera, float x, float y, float z);
+void set_camera_direction(Camera *camera, float x, float y, float z);
 
 Model *build_cube(float size);
 Model *build_sphere(float radius, int stacks, int sectors);

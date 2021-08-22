@@ -11,11 +11,12 @@ out vec2 fragTexture;
 uniform mat4 transformationMatrix;
 uniform mat4 normalMatrix;
 uniform mat4 projectionMatrix;
+uniform mat4 viewMatrix;
 
 void main()
 {
     vec4 worldPosition = transformationMatrix * vec4(vPos, 1.0);
-    gl_Position = projectionMatrix * worldPosition;
+    gl_Position = projectionMatrix * viewMatrix * worldPosition;
 
     fragPos = vec3(transformationMatrix * vec4(vPos, 1.0));
     fragNormal =  mat3(normalMatrix) * vNormal;

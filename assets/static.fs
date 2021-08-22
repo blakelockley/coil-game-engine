@@ -16,6 +16,8 @@ in vec3 fragPos;
 in vec3 fragNormal;
 in vec2 fragTexture;
 
+uniform vec3 viewPos;
+
 uniform vec3 color;
 uniform vec3 emissive;
 
@@ -36,7 +38,6 @@ void main()
     
     attenuation = pow(attenuation, light.position.w);
     
-    vec3 viewPos = vec3(0, 0, 0);
     vec3 norm = normalize(fragNormal);
     
     vec3 lightDir = normalize(position - fragPos);

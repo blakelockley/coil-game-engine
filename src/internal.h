@@ -10,6 +10,8 @@ struct _Scene {
     Light **lights;
     size_t n_lights;
 
+    Camera *camera;
+
     vec4 clear_color;
     mat4x4 projection;
 
@@ -26,6 +28,13 @@ struct _Light {
     float constant;
     float linear;
     float quadratic;
+};
+
+struct _Camera {
+    vec3 position;
+    vec3 direction;
+
+    mat4x4 view;
 };
 
 typedef struct _Vertex {

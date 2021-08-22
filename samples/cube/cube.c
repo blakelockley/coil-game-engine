@@ -8,10 +8,10 @@ void game_loop(Scene *scene, float delta) {
     static float rot_y = 0.0f;
     rot_y += delta;
 
-    set_rotation(cube, 0, 1, 0, -rot_y);
+    // set_rotation(cube, 0, 1, 0, -rot_y);
 
-    set_position(lamp, sin(rot_y), 0.0f, -3 + cos(rot_y));
-    set_light_position(light, sin(rot_y), 0.0f, -3 + cos(rot_y));
+    set_position(lamp, sin(rot_y) * 3, 0, -2);
+    set_light_position(light, sin(rot_y) * 3, 0, -2);
 }
 
 int main(int argc, char **argv) {
@@ -30,12 +30,16 @@ int main(int argc, char **argv) {
     add_entity(scene, cube);
 
     light = create_light();
+    set_light_mode(light, ENGINE_POINT_LIGHT);
+    set_light_position(light, 2, 0, -3.0f);
     set_ambient_color(light, 0.4f, 0.4f, 0.4f);
     set_diffuse_color(light, 0.8f, 0.8f, 0.8f);
     set_specular_color(light, 1.0f, 1.0f, 1.0f);
+    set_attenuation(light, 1.0f, 0.35f, 1.8f);
     add_light(scene, light);
 
     lamp = create_entity(cube_model);
+    set_position(lamp, 2, 0, -3.0f);
     set_scale(lamp, 0.1f);
     set_emissive(lamp, 1.0f, 1.0f, 1.0f);
     add_entity(scene, lamp);

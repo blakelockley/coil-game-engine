@@ -3,12 +3,14 @@
 Model *cube_model;
 Entity *cube, *lamp;
 Light *light;
+Camera *camera;
 
 void game_loop(Scene *scene, float delta) {
     static float rot_y = 0.0f;
     rot_y += delta;
 
-    // set_rotation(cube, 0, 1, 0, -rot_y);
+    set_rotation(cube, 0, 1, 0, rot_y);
+    set_camera_position(camera, 0, 0, cos(rot_y));
 
     set_position(lamp, sin(rot_y) * 3, 0, -2);
     set_light_position(light, sin(rot_y) * 3, 0, -2);
@@ -21,6 +23,9 @@ int main(int argc, char **argv) {
     set_loop_function(scene, game_loop);
     set_clear_color(scene, 0.0, 0.0, 0.0, 1.0);
     add_scene(window, scene);
+
+    camera = create_camera(0, 0, 0);
+    set_camera(scene, camera);
 
     cube_model = build_cube(1.0f);
 
@@ -47,12 +52,10 @@ int main(int argc, char **argv) {
     loop_window(window);
 
     destroy_light(light);
-
     destroy_entity(lamp);
     destroy_entity(cube);
-
     destroy_model(cube_model);
-
+    destroy_camera(camera);
     destroy_scene(scene);
     destroy_window(window);
 }

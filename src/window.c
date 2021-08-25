@@ -13,6 +13,18 @@ void error_callback(int error, const char *description) {
     fprintf(stderr, "Error: %s\n", description);
 }
 
+void key_callback(GLFWwindow *handle, int key, int scancode, int action, int mods) {
+    Window *window = glfwGetWindowUserPointer(handle);
+
+    for (int i = 0; i < window->n_scenes; i++) {
+        Scene *scene = window->scenes[i];
+        process_scene_input(scene, key, scancode, action, mods);
+    }
+
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+        glfwSetWindowShouldClose(handle, GLFW_TRUE);
+}
+
 Window *create_window(int width, int height, const char *title) {
     Window *window = (Window *)malloc(sizeof(Window));
 
@@ -46,6 +58,7 @@ Window *create_window(int width, int height, const char *title) {
     window->time_elapsed = 0;
 
     glfwSetWindowUserPointer(window->handle, (void *)window);
+    glfwSetKeyCallback(window->handle, key_callback);
 
     return window;
 }

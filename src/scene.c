@@ -29,6 +29,10 @@ void set_loop_function(Scene *scene, void (*fn)(Scene *, float)) {
     scene->loop_function = fn;
 }
 
+void set_input_function(Scene *scene, void (*fn)(Scene *, int, int, int, int)) {
+    scene->input_function = fn;
+}
+
 void set_clear_color(Scene *scene, float r, float g, float b, float a) {
     scene->clear_color[0] = r;
     scene->clear_color[1] = g;
@@ -53,6 +57,11 @@ void add_light(Scene *scene, Light *light) {
 void update_scene(Scene *scene, float delta) {
     if (scene->loop_function != NULL)
         scene->loop_function(scene, delta);
+}
+
+void process_scene_input(Scene *scene, int key, int scancode, int action, int mods) {
+    if (scene->input_function)
+        scene->input_function(scene, key, scancode, action, mods);
 }
 
 void render_scene(Scene *scene, int width, int height) {

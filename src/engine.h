@@ -30,6 +30,7 @@ void add_scene(Window *window, Scene *scene);
 Scene *create_scene();
 void destroy_scene(Scene *scene);
 void set_loop_function(Scene *scene, void (*fn)(Scene *, float));
+void set_input_function(Scene *scene, void (*fn)(Scene *, int, int, int, int));
 void set_viewport(Scene *scene, float x, float y, float width, float height);
 void set_clear_color(Scene *scene, float r, float g, float b, float a);
 void add_entity(Scene *scene, Entity *entity);

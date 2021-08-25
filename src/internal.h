@@ -16,6 +16,7 @@ struct _Scene {
     mat4x4 projection;
 
     void (*loop_function)(Scene *, float);
+    void (*input_function)(Scene *, int, int, int, int);
 };
 
 struct _Light {
@@ -54,6 +55,7 @@ struct _Model {
 // Scenes
 void update_scene(Scene *scene, float delta);
 void render_scene(Scene *scene, int width, int height);
+void process_scene_input(Scene *scene, int key, int scancode, int action, int mods);
 
 // Entities
 void render_entity(Entity *entity, Scene *scene);

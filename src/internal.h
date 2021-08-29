@@ -20,6 +20,8 @@ struct _Scene {
     void (*input_function)(Scene *, int, int, int, int);
     void (*mouse_position_function)(Scene *, double, double);
     void (*mouse_button_function)(Scene *, int, int, int);
+
+    GLuint skybox_id;
 };
 
 struct _Light {

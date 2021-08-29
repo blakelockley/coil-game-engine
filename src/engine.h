@@ -38,6 +38,7 @@ void set_clear_color(Scene *scene, float r, float g, float b, float a);
 void add_entity(Scene *scene, Entity *entity);
 void add_light(Scene *scene, Light *light);
 void set_camera(Scene *scene, Camera *camera);
+void load_skybox(Scene *scene, const char *path);
 
 Entity *create_entity(Model *model);
 void destroy_entity(Entity *entity);

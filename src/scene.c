@@ -3,8 +3,6 @@
 Scene *create_scene() {
     Scene *scene = (Scene *)malloc(sizeof(Scene));
 
-    scene->loop_function = NULL;
-
     scene->entities = NULL;
     scene->n_entities = 0;
 
@@ -15,6 +13,11 @@ Scene *create_scene() {
     scene->clear_color[1] = 0.0f;
     scene->clear_color[2] = 0.0f;
     scene->clear_color[3] = 1.0f;
+
+    scene->loop_function = NULL;
+    scene->input_function = NULL;
+    scene->mouse_position_function = NULL;
+    scene->mouse_button_function = NULL;
 
     return scene;
 }
@@ -31,6 +34,14 @@ void set_loop_function(Scene *scene, void (*fn)(Scene *, float)) {
 
 void set_input_function(Scene *scene, void (*fn)(Scene *, int, int, int, int)) {
     scene->input_function = fn;
+}
+
+void set_mouse_position_function(Scene *scene, void (*fn)(Scene *, double, double)) {
+    scene->mouse_position_function = fn;
+}
+
+void set_mouse_button_function(Scene *scene, void (*fn)(Scene *, int, int, int)) {
+    scene->mouse_button_function = fn;
 }
 
 void set_clear_color(Scene *scene, float r, float g, float b, float a) {
@@ -62,6 +73,16 @@ void update_scene(Scene *scene, float delta) {
 void process_scene_input(Scene *scene, int key, int scancode, int action, int mods) {
     if (scene->input_function)
         scene->input_function(scene, key, scancode, action, mods);
+}
+
+void process_scene_mouse_position(Scene *scene, double xpos, double ypos) {
+    if (scene->mouse_position_function)
+        scene->mouse_position_function(scene, xpos, ypos);
+}
+
+void process_scene_mouse_button(Scene *scene, int button, int action, int mods) {
+    if (scene->mouse_button_function)
+        scene->mouse_button_function(scene, button, action, mods);
 }
 
 void render_scene(Scene *scene, int width, int height) {

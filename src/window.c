@@ -25,8 +25,36 @@ void key_callback(GLFWwindow *handle, int key, int scancode, int action, int mod
         glfwSetWindowShouldClose(handle, GLFW_TRUE);
 }
 
+void mouse_position_callback(GLFWwindow *handle, double xpos, double ypos) {
+    Window *window = glfwGetWindowUserPointer(handle);
+
+    int width, height;
+    glfwGetWindowSize(window->handle, &width, &height);
+
+    double xnorm = xpos / (double)width * 2.0 - 1.0;
+    double ynorm = (ypos / (double)height * 2.0 - 1.0) * -1.0;
+
+    for (int i = 0; i < window->n_scenes; i++) {
+        Scene *scene = window->scenes[i];
+        process_scene_mouse_position(scene, xnorm, ynorm);
+    }
+}
+
+void mouse_button_callback(GLFWwindow *handle, int button, int action, int mods) {
+    Window *window = glfwGetWindowUserPointer(handle);
+
+    for (int i = 0; i < window->n_scenes; i++) {
+        Scene *scene = window->scenes[i];
+        process_scene_mouse_button(scene, button, action, mods);
+    }
+}
+
 Window *create_window(int width, int height, const char *title) {
     Window *window = (Window *)malloc(sizeof(Window));
+
+    window->scenes = NULL;
+    window->n_scenes = 0;
+    window->time_elapsed = 0;
 
     glfwSetErrorCallback(error_callback);
     if (!glfwInit())
@@ -53,12 +81,15 @@ Window *create_window(int width, int height, const char *title) {
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    window->scenes = NULL;
-    window->n_scenes = 0;
-    window->time_elapsed = 0;
-
     glfwSetWindowUserPointer(window->handle, (void *)window);
+    glfwSetInputMode(window->handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
     glfwSetKeyCallback(window->handle, key_callback);
+    glfwSetCursorPosCallback(window->handle, mouse_position_callback);
+    glfwSetMouseButtonCallback(window->handle, mouse_button_callback);
+
+    if (glfwRawMouseMotionSupported())
+        glfwSetInputMode(window->handle, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 
     return window;
 }

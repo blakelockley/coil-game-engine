@@ -71,6 +71,7 @@ void destroy_camera(Camera *camera);
 void set_camera_position(Camera *camera, float x, float y, float z);
 void set_camera_direction(Camera *camera, float x, float y, float z);
 
+Model *load_model(const char *path);
 Model *build_cube(float size);
 Model *build_sphere(float radius, int stacks, int sectors);
 

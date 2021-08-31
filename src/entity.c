@@ -28,7 +28,7 @@ Entity *create_entity(Model *model) {
     entity->emissive[1] = 0.0f;
     entity->emissive[2] = 0.0f;
 
-    entity->shader = load_shader("../../assets/static.vs", "../../assets/static.fs");
+    entity->shader = load_shader("assets/static.vs", "assets/static.fs");
 
     mat4x4_identity(entity->transform);
     entity->position[0] = 0.0f;

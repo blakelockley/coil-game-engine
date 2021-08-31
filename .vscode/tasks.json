@@ -5,7 +5,7 @@
       "type": "shell",
       "command": "make",
       "options": {
-        "cwd": "${workspaceRoot}/samples/cube"
+        "cwd": "${workspaceRoot}"
       },
       "group": {
         "kind": "build",
